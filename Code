@@ -1,0 +1,93 @@
+def getCurrencies():
+	print("Country and currency input:")
+	country1 = input("Please input the name of the first country")
+	currency1 = input("What currency do they use?")
+	country2 = input("Please input the name of the second country")
+	currency2 = input("What currency do they use?")
+	CounAndCurr = [[country1, currency1], [country2, currency2]]
+	print("")
+	return CounAndCurr
+
+def getItemPrices(CounAndCurr):
+	print("Item price input:")
+	print("Please enter how much each of these cost in", CounAndCurr[0][0], "using", CounAndCurr[0][1])
+	Milk1 = input("Milk: ")
+	Bread1 = input("Bread: ")
+	Butter1 = input("Butter: ")
+	print("Please enter how much each of these cost in", CounAndCurr[1][0], "using", CounAndCurr[1][1])
+	Milk2 = input("Milk: ")
+	Bread2 = input("Bread: ")
+	Butter2 = input("Butter: ")
+	Costs = [[Milk1, Bread1, Butter1],[Milk2, Bread2, Butter2]]
+	Valid = False
+	while Valid == False:
+		MoreItems = input("Would you like to enter the price of any more items? More items make the results more accurate Y/N")
+		if MoreItems == "Y":
+			End = False
+			while End == False:
+				print("Please enter how much it costs in", CounAndCurr[0][0], "using", CounAndCurr[0][1])
+				NewItem1 = input
+				print("Please enter how much it costs in", CounAndCurr[1][0], "using", CounAndCurr[1][1])
+				NewItem2 = input
+				Costs[0].append(NewItem1)
+				Costs[1].append(NewItem2)
+				EnterAnother = input("Enter another item? Y/N")
+				if EnterAnother == "N":
+					End == True
+				elif EnterAnother != "Y":
+					print("Invalid answer, exiting item price input")
+					End == True
+			Valid = True
+		elif MoreItems == "N":
+			print("Okay")
+			Valid = True
+		else:
+			print("Answer with Y or N")
+	print("")
+	return Costs
+
+def calculatePriceExchangeRate(CounAndCurr, Costs):
+	print("Calculating price exchange rate:")
+	Average = 0
+	for x in range(0, len(Costs[0])):
+		Average += round(float(Costs[1][x])/float(Costs[0][x]), 2)
+	PriceExchange = Average/len(Costs[0])
+	print("If a good were to cost 1", CounAndCurr[0][1], "at", CounAndCurr[0][0] + ", then it will cost an estimated", PriceExchange, CounAndCurr[1][1], "at", CounAndCurr[1][0], "\n")
+	Costs.append(PriceExchange)
+	return Costs
+
+def calculateGoodCost(CounAndCurr, Costs):
+  Valid = False
+  while Valid == False:
+	  print("Would you like to convert from", CounAndCurr[0][1] + "(0) or from", CounAndCurr[1][1] + "(1)")
+	  CurrToUse = int(input())
+	  if (CurrToUse == 0) or (CurrToUse == 1):
+	    Valid = True
+	  else:
+		  print("Please answer with a 0 or 1")
+  OriginalPrice = float(input("Please enter the price to convert"))
+  OriginalPrice = float(round(OriginalPrice, 2))
+  if CurrToUse == 0:
+	  NewPrice = OriginalPrice*Costs[2]
+	  print("The price in", CounAndCurr[1][1], "will be an estimated", NewPrice, CounAndCurr[1][0])
+  else:
+	  NewPrice = OriginalPrice/Costs[2]
+	  print("The price in", CounAndCurr[0][1], "will be an estimated", NewPrice, CounAndCurr[0][0])
+
+def main():
+	CounAndCurr = getCurrencies()
+	Costs = getItemPrices(CounAndCurr)
+	Costs = calculatePriceExchangeRate(CounAndCurr, Costs)
+	Valid = False
+
+	while Valid == False:
+		RunGoodCosts = input("Would you like to convert the cost of a good? Y/N")
+		if RunGoodCosts == "Y":
+			calculateGoodCost(CounAndCurr, Costs)
+			Valid = True
+		elif RunGoodCosts == "N":
+			Valid = True
+		else:
+			print("Please answer with Y or N")
+
+main()
